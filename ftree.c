@@ -1,8 +1,15 @@
 #include <dirent.h>
 #include <stdio.h>
 
-int main(int argc, char *argv[]) {
+void print_folder_content(DIR *pDir) {
   struct dirent *pDirent;
+  while ((pDirent = readdir(pDir)) != NULL) {
+    printf("['%s']\n", pDirent->d_name);
+  }
+  return;
+};
+
+int main(int argc, char *argv[]) {
   DIR *pDir;
 
   // Check that there is the correct number of arguments
@@ -17,9 +24,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  while ((pDirent = readdir(pDir)) != NULL) {
-    printf("['%s']\n", pDirent->d_name);
-  }
+  print_folder_content(pDir);
 
   closedir(pDir);
   return 0;
