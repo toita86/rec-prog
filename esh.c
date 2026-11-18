@@ -22,15 +22,16 @@ int esh_execute(char **args);
 // Some builtins are needed a program that changes
 // dir cannot execute with esh_launch otherwise only the
 // children will change the dir
-int esh_cd(char **args);
-int esh_help(char **args);
-int esh_exit(char **args);
-int esh_thankyou(char **args);
+int esh_builtin_cd(char **args);
+int esh_builtin_help(char **args);
+int esh_builtin_exit(char **args);
+int esh_builtin_thankyou(char **args);
 
 // List of builtin commands, followed by their corresponding functions.
 char *builtin_str[] = {"ecd", "ehelp", "exit", "ethankyou"};
 
-int (*builtin_func[])(char **) = {&esh_cd, &esh_help, &esh_exit, &esh_thankyou};
+int (*builtin_func[])(char **) = {&esh_builtin_cd, &esh_builtin_help,
+                                  &esh_builtin_exit, &esh_builtin_thankyou};
 
 int esh_num_builtins() { return sizeof(builtin_str) / sizeof(char *); }
 
@@ -163,7 +164,7 @@ int esh_execute(char **args) {
 }
 
 // Builtin function implementations.
-int esh_cd(char **args) {
+int esh_builtin_cd(char **args) {
   if (args[1] == NULL) {
     fprintf(stderr, "esh: expected argument to \"cd\"\n");
   } else {
@@ -174,7 +175,7 @@ int esh_cd(char **args) {
   return 1;
 }
 
-int esh_help(char **args) {
+int esh_builtin_help(char **args) {
   int i;
   printf("Eduard Brahas's ESH\n");
   printf("Type program names and arguments, and hit enter.\n");
@@ -188,7 +189,7 @@ int esh_help(char **args) {
   return 1;
 }
 
-int esh_thankyou(char **args) {
+int esh_builtin_thankyou(char **args) {
 
   printf("This was a really fun to do by hand project in the time of "
          "\"<Insert_model_name> do this make no mistakes\" \n");
@@ -198,4 +199,4 @@ int esh_thankyou(char **args) {
   return 1;
 }
 
-int esh_exit(char **args) { return 0; }
+int esh_builtin_exit(char **args) { return 0; }
