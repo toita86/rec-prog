@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   FILE *fp;
 
   if (argc < 2) {
-    printf("Usage fhex <file_name>");
+    printf("Usage fhex <file_name>\n");
     return 1;
   }
 
