@@ -1,6 +1,9 @@
+#include "limits.h"
 #include "string.h"
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -46,9 +49,15 @@ void esh_loop(void) {
   char *line;
   char **args;
   int status;
+  struct passwd *p = getpwuid(getuid());
+  char host_buf[HOST_NAME_MAX + 1];
+  char *user_name =
+      (p != NULL && p->pw_name != NULL) ? p->pw_name : "whoareyou?";
+  const char *hostname =
+      !gethostname(host_buf, sizeof(host_buf)) ? host_buf : "?";
 
   do {
-    printf("e: ");
+    printf("e-%s@%s: ", user_name, hostname);
     line = esh_read_line();      // reading the command
     args = esh_split_line(line); // parsing program and args
     status = esh_execute(args);  // execute the command
